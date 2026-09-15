@@ -1,0 +1,11 @@
+<?php
+require_once 'includes/auth.php';require_roles(['admin']);require_once 'config/db.php';
+$users=$pdo->query("SELECT id,username,full_name,role,status,created_at FROM users ORDER BY role,id")->fetchAll();
+$page_title='User Accounts | PCSCMS';include 'includes/header.php';include 'includes/sidebar.php';
+?>
+<main class="main-content">
+<div class="topbar glass-card"><div class="topbar-left"><button class="btn btn-icon d-lg-none" id="sidebarOpenBtn"><i class="bi bi-list"></i></button><div><div class="eyebrow-text">ADMINISTRATION</div><h2 class="page-title mb-1">User Accounts</h2><p class="page-subtitle mb-0">Only the Administrator can create and manage system accounts.</p></div></div><div class="topbar-right"><a href="account_create.php" class="btn btn-gradient"><i class="bi bi-person-plus me-2"></i>Add Inventory Staff</a><button class="btn btn-theme-toggle" id="themeToggle"><i class="bi bi-moon-stars-fill"></i><span>Dark</span></button></div></div>
+<div class="section-card glass-card mt-4"><div class="table-responsive"><table class="table custom-table align-middle mb-0"><thead><tr><th>Full Name</th><th>Username</th><th>Role</th><th>Status</th><th>Created</th><th class="text-end">Action</th></tr></thead><tbody>
+<?php foreach($users as $u): ?><tr><td><strong><?=htmlspecialchars($u['full_name'])?></strong></td><td><?=htmlspecialchars($u['username'])?></td><td><?=ucwords(str_replace('_',' ',$u['role']))?></td><td><span class="status-pill <?=$u['status']==='active'?'active':'inactive'?>"><?=ucfirst($u['status'])?></span></td><td><?=htmlspecialchars($u['created_at'])?></td><td class="text-end"><?php if($u['role']==='inventory_staff'): ?><a class="btn btn-sm btn-glass" href="account_edit.php?id=<?=$u['id']?>"><i class="bi bi-pencil"></i></a><form class="d-inline" method="POST" action="account_toggle.php"><input type="hidden" name="id" value="<?=$u['id']?>"><button class="btn btn-sm btn-danger-soft"><?= $u['status']==='active'?'Deactivate':'Activate' ?></button></form><?php else: ?><span class="text-muted small">Protected</span><?php endif; ?></td></tr><?php endforeach; ?>
+</tbody></table></div></div></main>
+<?php include 'includes/footer.php'; ?>
