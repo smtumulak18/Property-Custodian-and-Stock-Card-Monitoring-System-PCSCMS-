@@ -1,8 +1,9 @@
 <?php
-$host = '127.0.0.1';
-$db   = 'pcscms_db';
-$user = 'root';
-$pass = '';
+
+$host = 'sql306.infinityfree.com';
+$db   = 'if0_42928834_pcscms';
+$user = 'if0_42928834';
+$pass = 'YOUR_MYSQL_PASSWORD';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
@@ -16,6 +17,7 @@ $options = [
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (PDOException $e) {
-    die("Database connection failed. Make sure MySQL is running and the database exists.");
+    die("Database connection failed. Please check the database configuration.");
 }
+
 ?>
